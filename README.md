@@ -2,12 +2,12 @@
 Repository for the assignment in the Coursera course Getting and cleaning data.
 
 ## Introduction
-
+This script will tidy data from the UCI HAR data set and export a table containing the grouped average for each subjects activity.
 
 ## To run the script
 1. Clone this repository
 2. Extract contents of the zipped dataset to data/
-3. 
+3. Source run_analysis.R
 
 ## Scripts and connections
 Explained in the CodeBook.md

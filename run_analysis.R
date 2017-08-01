@@ -26,7 +26,7 @@ levels(combined$activity) <- activity_labels
 meanOfSubjectAndActivity <- combined %>% group_by(subject, activity) %>% summarise_all(funs(mean))
 
 # Write results file.
-write.table(meanOfSubjectAndActivity, file = "submission.txt", row.name = FALSE)
+write.table(meanOfSubjectAndActivity, file = "averageForEachSubject.txt", row.name = FALSE)
 meanOfSubjectAndActivity
 
 ## Loads data and assigns feature labels to the columns, only selects columns that have mean() and std() in them.
