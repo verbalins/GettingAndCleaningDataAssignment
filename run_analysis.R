@@ -9,11 +9,18 @@
 
 library(dplyr)
 
+# Download the data if not found.
+if (!file.exists("data/UCIHAR.zip")){
+        download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip", destfile = "data/UCIHAR.zip", method = "curl")
+}
+
+if(!file.exists("data")) { dir.create("data") }
+
 # Load activities.
-activity_labels <- read.table("data/activity_labels.txt")[,2]
+activity_labels <- read.table(unz("data/UCIHAR.zip", "UCI HAR Dataset/activity_labels.txt"))[,2]
 
 # Load the features to set to the data.
-features <- as.character(read.table("data/features.txt")[,2])
+features <- as.character(read.table(unz("data/UCIHAR.zip", "UCI HAR Dataset/features.txt"))[,2])
 
 # Get combined data.
 combined <- combine_data(load_data("train", features), load_data("test", features))
@@ -34,7 +41,7 @@ meanOfSubjectAndActivity
 load_data <- function(experiment, features){
         x <- read_table2(getPath(experiment, "X"), col_names = as.vector(features)) %>%
                 select(matches("mean()|std()"), -matches("angle|Freq")) 
-        activity <- read_table2(getPath(experiment, "Y"), col_names = c("activity"))
+        activity <- read_table2(getPath(experiment, "y"), col_names = c("activity"))
         subjects <- read_table2(getPath(experiment, "subject"), col_names = c("subject"))
         bind_cols(activity, subjects, x)
 }
@@ -45,5 +52,6 @@ combine_data <- function(train, test){
 }
 
 getPath <- function(experiment, variable){
-        paste("data/", experiment, "/", variable, "_", experiment, ".txt", sep = "")
+        file <- paste("UCI HAR Dataset/", experiment, "/", variable, "_", experiment, ".txt", sep = "")
+        unz("data/UCIHAR.zip", file)
 }
